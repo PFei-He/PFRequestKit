@@ -101,7 +101,7 @@
 - (void)baseRequestPost
 {
     //设置请求参数
-    if (params == nil) params = @{@"action": @"command"};
+    if (params == nil) params = @{@"": @"", @"": @""};
 
     [PFBaseRequest postPath:@"接口地址" params:params completion:^(id result, NSError *error) {
         NSLog(@"Completion: %@", result);
