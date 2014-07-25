@@ -286,19 +286,19 @@ typedef void(^completion)(id result, NSError *error);
     self = [super init];
 
     //参数
-    self.params     = params;
+    if (params)     self.params     = params;
 
     //参数是否JSON类型
-    self.isJSON     = isJSON;
+    if (isJSON)     self.isJSON     = isJSON;
 
     //缓存路径
-    self.savePath   = savePath;
+    if (savePath)   self.savePath   = savePath;
 
     //进度条
-    self.progress   = progress;
+    if (progress)   self.progress   = progress;
 
     //请求操作响应代码块
-    self.completion = completion;
+    if (completion) self.completion = completion;
 
     //创建线程
     dispatchQueue   = dispatch_queue_create("com.PF-Lib.PFRequestKit", DISPATCH_QUEUE_SERIAL);
