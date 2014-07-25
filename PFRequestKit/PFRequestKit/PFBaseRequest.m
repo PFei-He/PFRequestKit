@@ -540,8 +540,6 @@ typedef void(^completion)(id result, NSError *error);
         if (error) self.error = error;
         [self completionWithResponse:resultObject error:self.error];
     });
-
-    if (self.error) NSLog(@"解析JSON数据错误：\n%@", self.error);
     return resultObject;
 }
 
@@ -556,7 +554,7 @@ typedef void(^completion)(id result, NSError *error);
         if ([self.request URL]) userInfo = [NSDictionary dictionaryWithObject:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:userInfo];
         if (error) self.error = error;
-        NSLog(@"请求已被取消：%@", self.error);
+        NSLog(@"%@", self.error);
 
         [self finish];
         return;
