@@ -103,7 +103,7 @@
     //设置请求参数
     if (params == nil) params = @{@"": @"", @"": @""};
 
-    [PFBaseRequest postPath:@"接口地址" params:params completion:^(id result, NSError *error) {
+    [PFBaseRequest postPath:@"接口地址" params:params isJSON:NO completion:^(id result, NSError *error) {
         NSLog(@"Completion: %@", result);
         NSLog(@"Error: %@", error);
     }];
@@ -118,14 +118,14 @@
 }
 
 /*
-#pragma mark - Navigation
+ #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

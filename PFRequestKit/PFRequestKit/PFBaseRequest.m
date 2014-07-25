@@ -86,7 +86,6 @@ typedef void(^completion)(id result, NSError *error);
 
     NSString            *userAgent;
 
-    BOOL                 isJSON;            //是否JSON数据
     id                   resultObject;
 
     dispatch_queue_t     dispatchQueue;
@@ -148,6 +147,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodDelete
                                                     params:params
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -162,6 +162,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodGet
                                                     params:nil
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -177,6 +178,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodGet
                                                     params:params
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -194,6 +196,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodGet
                                                     params:params
+                                                    isJSON:NO
                                                   savePath:savePath
                                                   progress:progress
                                                 completion:completion];
@@ -209,6 +212,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodHead
                                                     params:params
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -219,11 +223,13 @@ typedef void(^completion)(id result, NSError *error);
 //post
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
+                     isJSON:(BOOL)isJSON
                  completion:(void (^)(id result, NSError *error))completion
 {
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodPost
                                                     params:params
+                                                    isJSON:isJSON
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -234,6 +240,7 @@ typedef void(^completion)(id result, NSError *error);
 //post
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
+                     isJSON:(BOOL)isJSON
                    savePath:(NSString *)savePath
                    progress:(void (^)(float progress))progress
                  completion:(void (^)(id result, NSError *error))completion
@@ -241,6 +248,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodPost
                                                     params:params
+                                                    isJSON:isJSON
                                                   savePath:savePath
                                                   progress:progress
                                                 completion:completion];
@@ -256,6 +264,7 @@ typedef void(^completion)(id result, NSError *error);
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodPut
                                                     params:params
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -269,6 +278,7 @@ typedef void(^completion)(id result, NSError *error);
 - (PFBaseRequest *)initWithURLPath:(NSString *)urlPath
                         HTTPMethod:(PFHTTPMethod)HTTPMethod
                             params:(NSDictionary *)params
+                            isJSON:(BOOL)isJSON
                           savePath:(NSString *)savePath
                           progress:(void (^)(float))progress
                         completion:(void (^)(id result, NSError *error))completion
@@ -277,6 +287,9 @@ typedef void(^completion)(id result, NSError *error);
 
     //参数
     self.params     = params;
+
+    //参数是否JSON类型
+    self.isJSON     = isJSON;
 
     //缓存路径
     self.savePath   = savePath;
@@ -411,7 +424,7 @@ typedef void(^completion)(id result, NSError *error);
         //获取请求的URL
         [self.request setURL:[NSURL URLWithString:finalURLString]];
     }
-    else if (isJSON)
+    else if (self.isJSON)
     {
         //添加JSON到请求参数
         NSError *error = nil;
@@ -560,7 +573,7 @@ typedef void(^completion)(id result, NSError *error);
 
     //设置请求头
     if (userAgent) [self.request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    if (isJSON) [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    if (self.isJSON) [self.request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
     //监听请求状态并更改请求状态为执行中
     [self willChangeValueForKey:@"isExecuting"];

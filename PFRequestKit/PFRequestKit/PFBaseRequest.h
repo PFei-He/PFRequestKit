@@ -30,6 +30,8 @@ typedef enum {
 @property (nonatomic, assign)       PFHTTPMethod             HTTPMethod;
 ///请求参数
 @property (nonatomic, strong)       NSDictionary            *params;
+///是否JSON数据
+@property (nonatomic, assign)       BOOL                     isJSON;
 ///文件路径
 @property (nonatomic, copy)         NSString                *savePath;
 ///超时时间
@@ -56,7 +58,6 @@ typedef enum {
 
 /**
  *  @brief GET方法
- *  @param params:      请求参数
  *  @param completion:  请求完成
  */
 + (PFBaseRequest *)getPath:(NSString *)urlPath
@@ -74,7 +75,7 @@ typedef enum {
 /**
  *  @brief GET方法
  *  @param params:      请求参数
- *  @param path:        文件路径
+ *  @param savePath:    文件路径
  *  @param progress:    进度条
  *  @param completion:  请求完成
  */
@@ -96,23 +97,25 @@ typedef enum {
 /**
  *  @brief POST方法
  *  @param params:      请求参数
- *  @param PATH:        文件路径
- *  @param progress:    进度条
+ *  @param isJSON:      请求参数是否JSON类型
  *  @param completion:  请求完成
  */
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
+                     isJSON:(BOOL)isJSON
                  completion:(void (^)(id result, NSError *error))completion;
 
 /**
  *  @brief POST方法
  *  @param params:      请求参数
- *  @param path:        路径
+ *  @param isJSON:      请求参数是否JSON类型
+ *  @param savePath:    文件路径
  *  @param progress:    进度条
  *  @param completion:  请求完成
  */
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
+                     isJSON:(BOOL)isJSON
                    savePath:(NSString *)savePath
                    progress:(void (^)(float progress))progress
                  completion:(void (^)(id result, NSError *error))completion;
@@ -126,17 +129,17 @@ typedef enum {
                     params:(NSDictionary *)params
                 completion:(void (^)(id result, NSError *error))completion;
 
-#pragma mark - Response Management Methods
-
-/**
- *  @brief 将请求结果转为NSData类型
- */
-- (NSData *)Data;
-
-/**
- *  @brief 将请求结果转为JSON类型
- */
-- (id)JSON;
+//#pragma mark - Response Management Methods
+//
+///**
+// *  @brief 将请求结果转为NSData类型
+// */
+//- (NSData *)Data;
+//
+///**
+// *  @brief 将请求结果转为JSON类型
+// */
+//- (id)JSON;
 
 @end
 
