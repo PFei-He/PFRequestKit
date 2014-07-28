@@ -313,8 +313,9 @@ typedef void(^completion)(id result, NSError *error);
     //创建请求
     self.request = [[NSMutableURLRequest alloc] initWithURL:self.url];
 
-    //超时
-    if (!self.timeoutInterval && ![PFRequestSingleton sharedInstance].timeoutInterval) self.timeoutInterval = kPFRequestTimeoutInterval;
+    //请求超时
+    if (![PFRequestSingleton sharedInstance].timeoutInterval) self.timeoutInterval = kPFRequestTimeoutInterval;
+    else self.timeoutInterval = [PFRequestSingleton sharedInstance].timeoutInterval;
     [self.request setTimeoutInterval:self.timeoutInterval];
 
     //HTTP管线化
