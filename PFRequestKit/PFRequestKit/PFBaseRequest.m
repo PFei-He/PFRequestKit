@@ -223,13 +223,12 @@ typedef void(^completion)(id result, NSError *error);
 //post
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
-                     isJSON:(BOOL)isJSON
                  completion:(void (^)(id result, NSError *error))completion
 {
     PFBaseRequest *request = [[self alloc] initWithURLPath:urlPath
                                                 HTTPMethod:PFHTTPMethodPost
                                                     params:params
-                                                    isJSON:isJSON
+                                                    isJSON:NO
                                                   savePath:nil
                                                   progress:nil
                                                 completion:completion];
@@ -551,7 +550,7 @@ typedef void(^completion)(id result, NSError *error);
     if ([self isCancelled])
     {
         NSDictionary *userInfo = nil;
-        if ([self.request URL]) userInfo = [NSDictionary dictionaryWithObject:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
+        if (self.request.URL) userInfo = [NSDictionary dictionaryWithObject:self.request.URL forKey:NSURLErrorFailingURLErrorKey];
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:userInfo];
         if (error) self.error = error;
         NSLog(@"%@", self.error);

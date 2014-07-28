@@ -97,12 +97,10 @@ typedef enum {
 /**
  *  @brief POST方法
  *  @param params:      请求参数
- *  @param isJSON:      请求参数是否JSON类型
  *  @param completion:  请求完成
  */
 + (PFBaseRequest *)postPath:(NSString *)urlPath
                      params:(NSDictionary *)params
-                     isJSON:(BOOL)isJSON
                  completion:(void (^)(id result, NSError *error))completion;
 
 /**

@@ -31,6 +31,9 @@
     //设置请求的主机地址
     [PFRequestSingleton sharedInstance].baseURL = @"http://www.weather.com.cn/data/sk";
 
+    //设置超时，单位为秒（默认为8秒）
+    [PFRequestSingleton sharedInstance].timeoutInterval = 30;
+
     NSArray *array = @[@"GET", @"GET&PARAMS", @"HEAD", @"POST"];
     for (int i = 0; i < array.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -103,7 +106,7 @@
     //设置请求参数
     if (params == nil) params = @{@"": @"", @"": @""};
 
-    [PFBaseRequest postPath:@"接口地址" params:params isJSON:NO completion:^(id result, NSError *error) {
+    [PFBaseRequest postPath:@"接口地址" params:params completion:^(id result, NSError *error) {
         NSLog(@"Completion: %@", result);
         NSLog(@"Error: %@", error);
     }];
