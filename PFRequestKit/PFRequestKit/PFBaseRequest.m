@@ -12,22 +12,43 @@
 
 @interface NSString (PFBaseRequest)
 
-- (NSString *)encodedParamsString;
+/**
+ *  @brief 编码URL字符串
+ */
+- (NSString *)URLEncodedString;
+
+/**
+ *  @brief 解码URL字符串
+ */
+- (NSString *)URLDecodedString;
 
 @end
 
 @implementation NSString (PFBaseRequest)
 
-- (NSString*)encodedParamsString
+//编码URL字符串
+- (NSString*)URLEncodedString
 {
-    NSString *result = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)self, NULL, CFSTR(":/=,!$&'()*+;[]@#?"), kCFStringEncodingUTF8);
+    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)self, NULL, CFSTR(":/=,!$&'()*+;[]@#?"), kCFStringEncodingUTF8);
+
 	return result;
+}
+
+//解码URL字符串
+- (NSString*)URLDecodedString
+{
+    NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (__bridge CFStringRef)self, CFSTR(""), kCFStringEncodingUTF8);
+
+    return result;
 }
 
 @end
 
 @interface NSData (PFBaseRequest)
 
+/**
+ *  @brief base64加密
+ */
 - (NSString *)base64;
 
 @end
@@ -37,6 +58,7 @@
 //设置编码
 static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+//base64加密
 - (NSString *)base64
 {
     if ([self length] == 0) return @"";
@@ -383,7 +405,7 @@ typedef void(^completion)(id result, NSError *error);
 
          if ([obj isKindOfClass:[NSString class]]) {//参数为NSString
              //格式化参数
-             NSString *paramsString = [obj encodedParamsString];
+             NSString *paramsString = [obj URLEncodedString];
              //拼接参数
              [stringParams addObject:[NSString stringWithFormat:@"%@=%@", key, paramsString]];
          }
